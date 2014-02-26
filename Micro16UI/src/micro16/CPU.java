@@ -6,6 +6,8 @@ import java.util.Arrays;
  * Micro16 CPU
  */
 class CPU {
+    // 11 named registers (R0..10), MAR, MBR and 
+    // 3 constant registers (0, 1, -1)
     private static final int REGISTER_COUNT = 16;
 
     private static final int ALU_NOP = 0;

@@ -8,6 +8,9 @@ import java.util.Arrays;
  * Time: 16:06
  */
 class Memory {
+    /*  For simplicity's sake, the memory is not byte-addressable
+        but only in machine word chunks (2 bytes).
+    */
     private final short[] data;
 
     private final static int MEMORY_SIZE = 1 << 16;
@@ -41,7 +44,7 @@ class Memory {
 
 
     public void reset() {
-        Arrays.fill(data, (byte) 0);
+        Arrays.fill(data, (short) 0);
         ready = true;
     }
 
