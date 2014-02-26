@@ -3,7 +3,7 @@ package micro16;
 import java.util.Arrays;
 
 /**
- * User: werner
+ * User: Martin
  * Date: 26.02.14
  * Time: 16:06
  */
