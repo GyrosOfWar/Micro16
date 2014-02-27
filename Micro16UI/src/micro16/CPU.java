@@ -8,23 +8,23 @@ import java.util.Arrays;
 class CPU {
     // 11 named registers (R0..10), MAR, MBR and 
     // 3 constant registers (0, 1, -1)
-    private static final int REGISTER_COUNT = 16;
+    public static final int REGISTER_COUNT = 16;
 
-    private static final int ALU_NOP = 0;
-    private static final int ALU_ADD = 1;
-    private static final int ALU_AND = 2;
-    private static final int ALU_NOT = 3;
+    public static final int ALU_NOP = 0;
+    public static final int ALU_ADD = 1;
+    public static final int ALU_AND = 2;
+    public static final int ALU_NOT = 3;
 
-    private static final int SH_LEFT = 1;
-    private static final int SH_RIGHT = 2;
+    public static final int SH_LEFT = 1;
+    public static final int SH_RIGHT = 2;
 
-    private static final int COND_IF_N = 1;
-    private static final int COND_IF_Z = 2;
-    private static final int COND_GOTO = 3;
+    public static final int COND_IF_N = 1;
+    public static final int COND_IF_Z = 2;
+    public static final int COND_GOTO = 3;
 
-    private static final int R0_IDX = 4;
-    private static final int R10_IDX = 15;
-    private static final int MAR_REGISTER_IDX = 3;
+    public static final int R0_IDX = 4;
+    public static final int R10_IDX = 15;
+    public static final int MAR_REGISTER_IDX = 3;
     public static final int MBR_REGISTER_IDX = 15;
 
     private final short[] registers;
@@ -59,7 +59,7 @@ class CPU {
         byte bBus = instr.B_BUS();
         byte sBus;
 
-        if(instr.ENS()) {
+        if (instr.ENS()) {
             sBus = instr.S_BUS();
         } else if (instr.MBR()) {
             sBus = MBR_REGISTER_IDX;
@@ -87,14 +87,13 @@ class CPU {
         }
 
         // Memory stuff
-        if(instr.MS()) {
+        if (instr.MS()) {
             short MAR = registers[MAR_REGISTER_IDX];
             short MBR = registers[MBR_REGISTER_IDX];
             // Write
-            if(instr.RD_WR()) {
+            if (instr.RD_WR()) {
                 memory.write(MAR, MBR);
-            }
-            else {
+            } else {
                 memory.read(MAR, registers);
             }
         }
@@ -112,6 +111,14 @@ class CPU {
         zeroFlag = false;
         negativeFlag = false;
         this.memory.reset();
+    }
+
+    /**
+     * Returns the number of instructions of the
+     * program this CPU executes.
+     */
+    public int getProgramLength() {
+        return controlStore.length;
     }
 
     @Override

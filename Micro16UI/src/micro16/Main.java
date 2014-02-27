@@ -1,12 +1,11 @@
 package micro16;
 
-import static java.lang.System.out;
+import java.time.Duration;
+import java.time.temporal.Temporal;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * User: Martin
- * Date: 25.02.14
- * Time: 18:25
- */
+import static java.lang.System.out;
 
 public class Main {
     public static void main(String[] args) {
@@ -16,11 +15,15 @@ public class Main {
                 0x001c0000,
                 0x081a1100
         });
-        out.println(c);
-        c.step();
-        c.step();
-        c.step();
-        c.step();
-        out.println(c);
+        Stopwatch s = new Stopwatch();
+        for (int i = 0; i < c.getProgramLength(); i++) {
+            s.start();
+
+            c.step();
+
+            s.stop();
+            s.reset();
+        }
+        out.println(s);
     }
 }
