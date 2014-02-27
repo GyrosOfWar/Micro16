@@ -39,12 +39,12 @@ public class Micro16Parser {
 
         LSH {
             public Short map(Short a) {
-                return (a << 1);
+                return (short) (a << (short) 1);
             }
         },
         RSH {
             public Short map(Short a) {
-                return (a >>> 1);
+                return (short) (a >>> (short) 1);
             }
         }
     }

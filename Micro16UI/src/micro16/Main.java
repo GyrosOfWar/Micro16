@@ -3,10 +3,12 @@ package micro16;
 public class Main {
     public static void main(String[] args) {
         int[] memoryWrite = new int[]{
+               /* R1 <- lsh(1+1)
+                  MBR <- R1; wr
+                  wr */
                 0x0a151100,
-                0x01200500,
+                0x01200500, // ENS not set, but should still write to MBR
                 0x00200000
-
         };
 
         int[] lshAndAdd = new int[]{
