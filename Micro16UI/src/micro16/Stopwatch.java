@@ -10,6 +10,15 @@ import java.util.List;
  * Time: 18:25
  */
 
+class Measurer {
+    public static void measure(Runnable r) {
+        long t0 = System.nanoTime();
+        r.run();
+        long t1 = System.nanoTime();
+        System.out.println("Elasped time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
+    }
+}
+
 public class Stopwatch {
     private long start;
     private long end;
@@ -44,7 +53,7 @@ public class Stopwatch {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        for(Duration d: times) {
+        for (Duration d : times) {
             sb.append(d.toNanos() / (1000.0 * 1000.0)).append(" ms\n");
         }
 
@@ -52,6 +61,6 @@ public class Stopwatch {
     }
 
     public Duration getLastTime() {
-        return times.get(times.size()-1);
+        return times.get(times.size() - 1);
     }
 }

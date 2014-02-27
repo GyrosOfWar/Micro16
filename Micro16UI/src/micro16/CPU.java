@@ -54,7 +54,7 @@ class CPU {
 
         int raw = controlStore[instructionCounter++];
         Instruction instr = new Instruction(raw);
-
+        // A-MUX==true gets the value from the MAR
         byte aBus = instr.A_MUX() ? MAR_REGISTER_IDX : instr.A_BUS();
         byte bBus = instr.B_BUS();
         byte sBus;
@@ -70,8 +70,6 @@ class CPU {
         if (instr.MAR()) {
             registers[MAR_REGISTER_IDX] = registers[bBus];
             return;
-        } else if (instr.MBR()) {
-            sBus = MBR_REGISTER_IDX;
         }
 
         // Always perform an ALU operation, since ALU = 00 is also
