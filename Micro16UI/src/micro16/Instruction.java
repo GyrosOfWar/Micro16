@@ -15,8 +15,24 @@ class Instruction {
         bits = convert(raw);
     }
 
+
+    @Override
+    public int hashCode() {
+        return bits.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return bits.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "0x" + Integer.toHexString((int) bits.toLongArray()[0]);
+    }
+
     private static BitSet convert(long value) {
-        BitSet bits = new BitSet(32);
+        BitSet bits = new BitSet(CPU.INSTRUCTION_LENGTH);
         int index = 0;
         while (value != 0L) {
             if (value % 2L != 0) {
@@ -31,29 +47,29 @@ class Instruction {
     public byte ADDR() {
         byte[] v = bits.get(0, 8).toByteArray();
         return v.length == 1 ?
-                v[0]
-                : 0;
+            v[0]
+            : 0;
     }
 
     public byte A_BUS() {
         byte[] v = bits.get(8, 12).toByteArray();
         return v.length == 1 ?
-                v[0]
-                : 0;
+            v[0]
+            : 0;
     }
 
     public byte B_BUS() {
         byte[] v = bits.get(12, 16).toByteArray();
         return v.length == 1 ?
-                v[0]
-                : 0;
+            v[0]
+            : 0;
     }
 
     public byte S_BUS() {
         byte[] v = bits.get(16, 20).toByteArray();
         return v.length == 1 ?
-                v[0]
-                : 0;
+            v[0]
+            : 0;
     }
 
     public boolean ENS() {
@@ -79,22 +95,22 @@ class Instruction {
     public byte SH() {
         byte[] v = bits.get(25, 27).toByteArray();
         return v.length == 1 ?
-                v[0]
-                : 0;
+            v[0]
+            : 0;
     }
 
     public byte ALU() {
         byte[] v = bits.get(27, 29).toByteArray();
         return v.length == 1 ?
-                v[0]
-                : 0;
+            v[0]
+            : 0;
     }
 
     public byte COND() {
         byte[] v = bits.get(29, 31).toByteArray();
         return v.length == 1 ?
-                v[0]
-                : 0;
+            v[0]
+            : 0;
     }
 
     public boolean A_MUX() {

@@ -6,15 +6,17 @@ import java.util.Arrays;
  * Micro16 CPU
  */
 class CPU {
-    // 11 named registers (R0..10), MAR, MBR and 
+    // 11 named registers (R0..10), MAR, MBR and
     // 3 constant registers (0, 1, -1)
     public static final int REGISTER_COUNT = 16;
+    public static final int INSTRUCTION_LENGTH = 32;
 
     public static final int ALU_NOP = 0;
     public static final int ALU_ADD = 1;
     public static final int ALU_AND = 2;
     public static final int ALU_NOT = 3;
 
+    public static final int SH_NOP = 0;
     public static final int SH_LEFT = 1;
     public static final int SH_RIGHT = 2;
 
@@ -54,17 +56,20 @@ class CPU {
 
         int raw = controlStore[instructionCounter++];
         Instruction instr = new Instruction(raw);
+
         // A-MUX==true gets the value from the MAR
         byte aBus = instr.A_MUX() ? MAR_REGISTER_IDX : instr.A_BUS();
         byte bBus = instr.B_BUS();
-        byte sBus;
+        byte sBus = instr.S_BUS();
 
         if (instr.ENS()) {
             sBus = instr.S_BUS();
-        } else if (instr.MBR()) {
+        } else if (instr.MBR() && !instr.ENS()) {
             sBus = MBR_REGISTER_IDX;
-        } else {
-            throw new IllegalArgumentException("Not a valid S bus value");
+        }
+
+        if (instr.ENS() && sBus < 3) {
+            throw new IllegalArgumentException("Can't write to read-only registers!");
         }
 
         if (instr.MAR()) {
@@ -72,27 +77,23 @@ class CPU {
             return;
         }
 
-        // Always perform an ALU operation, since ALU = 00 is also
-        // an operation (NOP)
-        aluOp(instr.ALU(), aBus, bBus, sBus, instr.ENS());
-
-        if (instr.SH() != 0) {
-            shifterOp(instr.SH(), sBus, instr.ENS());
-        }
+        short aluResult = aluOp(instr.ALU(), aBus, bBus);
+        short shifterResult = shifterOp(instr.SH(), aluResult);
 
         if (instr.COND() != 0) {
             condOp(instr.COND(), instr.ADDR());
         }
+        registers[sBus] = shifterResult;
 
         // Memory stuff
         if (instr.MS()) {
             short MAR = registers[MAR_REGISTER_IDX];
             short MBR = registers[MBR_REGISTER_IDX];
-            // Write
+            // read
             if (instr.RD_WR()) {
-                memory.write(MAR, MBR);
-            } else {
                 memory.read(MAR, registers);
+            } else {
+                memory.write(MAR, MBR);
             }
         }
     }
@@ -139,7 +140,7 @@ class CPU {
         zeroFlag = result == 0;
     }
 
-    private void aluOp(byte aluFlag, byte aBus, byte bBus, byte sBus, boolean ens) {
+    private short aluOp(byte aluFlag, byte aBus, byte bBus) {
         short result;
 
         switch (aluFlag) {
@@ -158,29 +159,27 @@ class CPU {
             default:
                 throw new IllegalArgumentException("Not a valid ALU flag.");
         }
-        if (ens) {
-            registers[sBus] = result;
-        }
         checkFlags(result);
+        return result;
     }
 
-    private void shifterOp(byte shFlag, byte sBus, boolean ens) {
-        short value = registers[sBus];
+    private short shifterOp(byte shFlag, short aluResult) {
+        short result = aluResult;
         switch (shFlag) {
+            case SH_NOP:
+                break;
             case SH_LEFT:
-                value <<= 1;
+                result <<= 1;
                 break;
 
             case SH_RIGHT:
-                value >>= 1;
+                result >>>= 1;
                 break;
             default:
                 throw new IllegalArgumentException("Invalid SH command.");
         }
-        if (ens) {
-            registers[sBus] = value;
-        }
-        checkFlags(value);
+        checkFlags(result);
+        return result;
 
     }
 

@@ -3,6 +3,9 @@ package micro16;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 
 /**
  * User: Martin
@@ -17,6 +20,24 @@ class Measurer {
         long t1 = System.nanoTime();
         System.out.println("Elasped time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
     }
+
+    public static <T, R> R measure(Function<T, R> func, T parameter) {
+        long t0 = System.nanoTime();
+        R result = func.apply(parameter);
+        long t1 = System.nanoTime();
+        System.out.println("Elasped time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
+        return result;
+    }
+
+    public static <T> T measure(BinaryOperator<T> func, T s, T t) {
+        long t0 = System.nanoTime();
+        T result = func.apply(s, t);
+        long t1 = System.nanoTime();
+        System.out.println("Elasped time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
+        return result;
+    }
+
+
 }
 
 public class Stopwatch {
@@ -54,13 +75,18 @@ public class Stopwatch {
         StringBuilder sb = new StringBuilder();
 
         for (Duration d : times) {
-            sb.append(d.toNanos() / (1000.0 * 1000.0)).append(" ms\n");
+            sb.append(String.format("%s ms\n", d.toNanos() / (1000.0 * 1000.0)));
         }
+        Duration avg = times.stream().reduce(Duration.ZERO, Duration::plus).dividedBy(times.size() > 1 ? times.size() : 1);
+        sb.append(String.format("Average time: %s ms", avg.toNanos() / (1000.0 * 1000.0)));
 
         return sb.toString();
     }
 
-    public Duration getLastTime() {
-        return times.get(times.size() - 1);
+    public Optional<Duration> getLastTime() {
+        if (times.isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(times.get(times.size() - 1));
     }
 }

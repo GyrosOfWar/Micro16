@@ -19,16 +19,19 @@ class Memory {
 
     public Memory() {
         data = new short[MEMORY_SIZE];
-        ready = true;
+        ready = false;
     }
 
     public boolean write(int idx, short value) {
         if (!ready) {
             ready = true;
+            System.out.println("Writing, not ready yet!");
             return false;
         }
         ready = false;
         data[idx] = value;
+        System.out.println("Writing to memory!");
+        System.out.println("data[" + idx + "] = " + value);
         return true;
     }
 
@@ -37,7 +40,7 @@ class Memory {
             ready = true;
             return false;
         }
-
+        ready = false;
         registers[CPU.MBR_REGISTER_IDX] = data[idx];
         return true;
     }
