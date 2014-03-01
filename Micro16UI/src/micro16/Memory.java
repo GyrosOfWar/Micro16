@@ -9,8 +9,7 @@ import java.util.Arrays;
  */
 class Memory {
     /*  For simplicity's sake, the memory is not byte-addressable
-        but only in machine word chunks (2 bytes).
-    */
+        but only in machine word chunks (2 bytes). */
     private final short[] data;
 
     private final static int MEMORY_SIZE = 1 << 16;

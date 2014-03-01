@@ -78,11 +78,14 @@ class CPU {
         }
 
         short aluResult = aluOp(instr.ALU(), aBus, bBus);
+        negativeFlag = aluResult < 0;
+        zeroFlag = aluResult == 0;
         short shifterResult = shifterOp(instr.SH(), aluResult);
 
         if (instr.COND() != 0) {
             condOp(instr.COND(), instr.ADDR());
         }
+
         registers[sBus] = shifterResult;
 
         // Memory stuff
@@ -137,10 +140,6 @@ class CPU {
         return sb.toString();
     }
 
-    private void checkFlags(short result) {
-        negativeFlag = result < 0;
-        zeroFlag = result == 0;
-    }
 
     private short aluOp(byte aluFlag, byte aBus, byte bBus) {
         short result;
@@ -161,7 +160,6 @@ class CPU {
             default:
                 throw new IllegalArgumentException("Not a valid ALU flag.");
         }
-        checkFlags(result);
         return result;
     }
 
@@ -180,7 +178,6 @@ class CPU {
             default:
                 throw new IllegalArgumentException("Invalid SH command.");
         }
-        checkFlags(result);
         return result;
 
     }
