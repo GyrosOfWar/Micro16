@@ -132,6 +132,8 @@ class CPU {
         sb.append("Negative flag: ").append(negativeFlag).append(" \n");
         sb.append("Zero flag: ").append(zeroFlag).append("\n");
         sb.append("Instruction counter: ").append(instructionCounter).append("\n");
+        sb.append("\nMemory:\n");
+        sb.append(memory.toString()).append("\n");
         return sb.toString();
     }
 

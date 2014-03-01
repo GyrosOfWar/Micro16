@@ -51,8 +51,18 @@ class Memory {
         ready = true;
     }
 
-    public boolean isReady() {
-        return ready;
+    @Override
+    public String toString() {
+        return toString(0, 16);
+    }
+
+    public String toString(int s, int e) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = s; i < e; i++) {
+            sb.append("0x").append(Integer.toHexString(i).toUpperCase()).append(": ").append(data[i]).append("\n");
+        }
+
+        return sb.toString();
     }
 
 }

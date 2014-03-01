@@ -27,7 +27,7 @@ public class Main {
             0x08161600,
             0x08164600
         };
-        CPU c = new CPU(subtraction);
+        CPU c = new CPU(memoryWrite);
         for (int i = 0; i < c.getProgramLength(); i++) {
             //out.println(c);
             c.step();
