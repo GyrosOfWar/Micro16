@@ -21,35 +21,55 @@ class Memory {
         ready = false;
     }
 
+    /**
+     * Writes a short value to the memory.
+     *
+     * @param idx   Memory address to write to
+     * @param value Value to put into the memory
+     * @return True if the write was successful, false otherwise
+     */
     public boolean write(int idx, short value) {
         if (!ready) {
             ready = true;
-            System.out.println("Writing, not ready yet!");
             return false;
         }
         ready = false;
         data[idx] = value;
-        System.out.println("Writing to memory!");
-        System.out.println("data[" + idx + "] = " + value);
         return true;
     }
 
+    /**
+     * Reads a memory value to the register.
+     *
+     * @param idx       Memory address to read from
+     * @param registers The CPU's register array that the memory value will be stored in
+     * @return True if the read was successful, false otherwise.
+     */
     public boolean read(int idx, short[] registers) {
         if (!ready) {
             ready = true;
             return false;
         }
         ready = false;
+        // Write to the MBR register of the CPU directly
         registers[CPU.MBR_REGISTER_IDX] = data[idx];
         return true;
     }
 
-
+    /**
+     * Clears the memory by overwriting each value in the
+     * memory with 0.
+     */
     public void reset() {
         Arrays.fill(data, (short) 0);
-        ready = true;
+        ready = false;
     }
 
+    /**
+     * Outputs the first 16 memory addresses and their values of this memory.
+     *
+     * @return A string representation of this object.
+     */
     @Override
     public String toString() {
         return toString(0, 16);
@@ -62,6 +82,10 @@ class Memory {
         }
 
         return sb.toString();
+    }
+
+    short get(int idx) {
+        return data[idx];
     }
 
 }

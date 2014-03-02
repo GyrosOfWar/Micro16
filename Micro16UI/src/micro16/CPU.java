@@ -55,6 +55,11 @@ class CPU {
         negativeFlag = zeroFlag = false;
 
         int raw = controlStore[instructionCounter++];
+
+        if (raw == 0) {
+            return;
+        }
+
         Instruction instr = new Instruction(raw);
 
         // A-MUX==true gets the value from the MAR
@@ -78,6 +83,7 @@ class CPU {
         }
 
         short aluResult = aluOp(instr.ALU(), aBus, bBus);
+        // Check the flags for the ALU result only
         negativeFlag = aluResult < 0;
         zeroFlag = aluResult == 0;
         short shifterResult = shifterOp(instr.SH(), aluResult);
@@ -86,9 +92,10 @@ class CPU {
             condOp(instr.COND(), instr.ADDR());
         }
 
+        // Write result to the register
         registers[sBus] = shifterResult;
 
-        // Memory stuff
+        // Memory IO
         if (instr.MS()) {
             short MAR = registers[MAR_REGISTER_IDX];
             short MBR = registers[MBR_REGISTER_IDX];
@@ -98,6 +105,12 @@ class CPU {
             } else {
                 memory.write(MAR, MBR);
             }
+        }
+    }
+
+    public void stepUntilCompletion() {
+        while (instructionCounter < controlStore.length) {
+            step();
         }
     }
 
@@ -123,6 +136,10 @@ class CPU {
         return controlStore.length;
     }
 
+    Memory getMemory() {
+        return memory;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -138,6 +155,10 @@ class CPU {
         sb.append("\nMemory:\n");
         sb.append(memory.toString()).append("\n");
         return sb.toString();
+    }
+
+    public short[] getRegisters() {
+        return registers;
     }
 
 

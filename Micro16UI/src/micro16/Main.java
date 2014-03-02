@@ -1,5 +1,7 @@
 package micro16;
 
+import java.time.Instant;
+
 import static java.lang.System.out;
 
 public class Main {
@@ -9,8 +11,8 @@ public class Main {
               MBR <- R1; wr
               wr */
             0x0a151100,
-            0x01200500, // ENS not set, but should still write to MBR
-            0x00200000  // Invalid S-Bus value
+            0x01200500,
+            0x00200000
         };
 
         int[] lshAndAdd = new int[]{
@@ -28,10 +30,18 @@ public class Main {
             0x08164600
         };
         CPU c = new CPU(memoryWrite);
-        for (int i = 0; i < c.getProgramLength(); i++) {
-            //out.println(c);
-            c.step();
+        for (int n = 0; n < 20; n++) {
+            int k = 0;
+            Instant t = Instant.now();
+            Instant end = t.plusSeconds(1);
+            while (end.isAfter(Instant.now())) {
+                c.reset();
+                for (int i = 0; i < c.getProgramLength(); i++) {
+                    c.step();
+                    k++;
+                }
+            }
+            out.println(k);
         }
-        out.println(c);
     }
 }
