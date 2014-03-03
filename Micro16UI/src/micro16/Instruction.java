@@ -1,7 +1,5 @@
 package micro16;
 
-import java.util.BitSet;
-
 /**
  * User: Martin
  * Date: 25.02.14
@@ -28,7 +26,7 @@ class Instruction {
 
     @Override
     public String toString() {
-        return "0x" + bits.toString();
+        return bits.toString();
     }
 
     /**

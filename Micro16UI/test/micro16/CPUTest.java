@@ -55,6 +55,28 @@ public class CPUTest {
     }
 
     @Test
+    public void testRegisters() {
+        /*
+        R10 <- 1 + 1
+        R9 <- R10
+        R10 <- lsh(R10)
+         */
+        int[] registers = new int[]{
+            0x081e1100,
+            0x001d0e00,
+            0x021e0e00
+        };
+        CPU cpu = new CPU(registers);
+        cpu.stepUntilCompletion();
+
+        short r9 = cpu.getRegisters()[CPU.R0_IDX + 9];
+        short r10 = cpu.getRegisters()[CPU.R0_IDX + 10];
+
+        assertEquals(2, r9);
+        assertEquals(4, r10);
+    }
+
+    @Test
     public void testGoto() {
         // Why is goto a keyword in Java?
         /*
@@ -97,7 +119,7 @@ public class CPUTest {
         CPU cpu = new CPU(ifNTest);
         cpu.stepUntilCompletion();
 
-        short r1 = cpu.getRegisters()[CPU.R0_IDX+1];
+        short r1 = cpu.getRegisters()[CPU.R0_IDX + 1];
 
         assertEquals(r1, 3);
     }
@@ -112,11 +134,11 @@ public class CPUTest {
         R2 <- R2 + 1
          */
         int[] ifZTest = new int[]{
-                0x00150100,
-                0x08142500,
-                0x40000404,
-                0x08141400,
-                0x08161600
+            0x00150100,
+            0x08142500,
+            0x40000404,
+            0x08141400,
+            0x08161600
         };
 
         CPU cpu = new CPU(ifZTest);

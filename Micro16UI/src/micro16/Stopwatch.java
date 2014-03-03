@@ -18,14 +18,14 @@ class Measurer {
         long t0 = System.nanoTime();
         r.run();
         long t1 = System.nanoTime();
-        System.out.println("Elasped time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
+        System.out.println("Elapsed time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
     }
 
     public static <T, R> R measure(Function<T, R> func, T parameter) {
         long t0 = System.nanoTime();
         R result = func.apply(parameter);
         long t1 = System.nanoTime();
-        System.out.println("Elasped time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
+        System.out.println("Elapsed time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
         return result;
     }
 
@@ -33,7 +33,7 @@ class Measurer {
         long t0 = System.nanoTime();
         T result = func.apply(s, t);
         long t1 = System.nanoTime();
-        System.out.println("Elasped time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
+        System.out.println("Elapsed time: " + (t1 - t0) / (1000.0 * 1000.0) + " ms");
         return result;
     }
 

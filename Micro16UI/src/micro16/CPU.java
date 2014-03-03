@@ -25,7 +25,7 @@ class CPU {
     public static final int COND_GOTO = 3;
 
     public static final int R0_IDX = 4;
-    public static final int R10_IDX = 15;
+    public static final int R10_IDX = 14;
     public static final int MAR_REGISTER_IDX = 3;
     public static final int MBR_REGISTER_IDX = 15;
 
@@ -148,7 +148,7 @@ class CPU {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Register contents:\n");
-        for (int i = R0_IDX; i < R10_IDX; i++) {
+        for (int i = R0_IDX; i <= R10_IDX; i++) {
             sb.append("R").append(i - 4).append(" = ").append(registers[i]).append("\n");
         }
         sb.append("MAR = ").append(registers[MAR_REGISTER_IDX]).append("\n");
