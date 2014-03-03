@@ -29,19 +29,19 @@ public class Main {
             0x08161600,
             0x08164600
         };
-        CPU c = new CPU(memoryWrite);
-        for (int n = 0; n < 20; n++) {
+        CPU c = new CPU(subtraction);
+        while(true) {
             int k = 0;
             Instant t = Instant.now();
             Instant end = t.plusSeconds(1);
             while (end.isAfter(Instant.now())) {
                 c.reset();
-                for (int i = 0; i < c.getProgramLength(); i++) {
+                while (c.getInstructionCounter() < c.getProgramLength()) {
                     c.step();
                     k++;
                 }
             }
-            out.println(k);
+            out.println("Executed " + k + " instructions/s");
         }
     }
 }

@@ -76,4 +76,29 @@ public class CPUTest {
         short r0 = cpu.getRegisters()[CPU.R0_IDX];
         assertEquals(r0, 8);
     }
+
+    @Test
+    public void testIfN() {
+        /*
+        R0 <- -1
+        R1 <- 1 + 1
+        R0; if N goto 4
+        R1 <- R1 + R1
+        R1 <- R1 + 1
+         */
+        int[] ifNTest = new int[]{
+            0x00140200,
+            0x08151100,
+            0x20000404,
+            0x08155500,
+            0x08151500
+        };
+
+        CPU cpu = new CPU(ifNTest);
+        cpu.stepUntilCompletion();
+
+        short r1 = cpu.getRegisters()[CPU.R0_IDX+1];
+
+        assertEquals(r1, 3);
+    }
 }

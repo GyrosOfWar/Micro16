@@ -114,6 +114,10 @@ class CPU {
         }
     }
 
+    public byte getInstructionCounter() {
+        return instructionCounter;
+    }
+
     /**
      * Resets this CPU to its original state.
      */
