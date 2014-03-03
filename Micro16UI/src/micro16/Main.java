@@ -30,7 +30,7 @@ public class Main {
             0x08164600
         };
         CPU c = new CPU(subtraction);
-        while(true) {
+        while (true) {
             int k = 0;
             Instant t = Instant.now();
             Instant end = t.plusSeconds(1);

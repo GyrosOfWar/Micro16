@@ -9,10 +9,10 @@ import java.util.BitSet;
  */
 
 class Instruction {
-    private final BitSet bits;
+    private final BitSet32 bits;
 
     public Instruction(int raw) {
-        bits = convert(raw);
+        bits = new BitSet32(raw);
     }
 
 
@@ -28,20 +28,7 @@ class Instruction {
 
     @Override
     public String toString() {
-        return "0x" + Integer.toHexString((int) bits.toLongArray()[0]);
-    }
-
-    private static BitSet convert(long value) {
-        BitSet bits = new BitSet(CPU.INSTRUCTION_LENGTH);
-        int index = 0;
-        while (value != 0L) {
-            if (value % 2L != 0) {
-                bits.set(index);
-            }
-            ++index;
-            value = value >>> 1;
-        }
-        return bits;
+        return "0x" + bits.toString();
     }
 
     /**
@@ -49,40 +36,28 @@ class Instruction {
      * to jump to.
      */
     public byte ADDR() {
-        byte[] v = bits.get(0, 8).toByteArray();
-        return v.length == 1 ?
-            v[0]
-            : 0;
+        return bits.get(0, 8);
     }
 
     /**
      * The A-BUS is the register index of the first operand.
      */
     public byte A_BUS() {
-        byte[] v = bits.get(8, 12).toByteArray();
-        return v.length == 1 ?
-            v[0]
-            : 0;
+        return bits.get(8, 12);
     }
 
     /**
      * The B-BUS is the register index of the second operand
      */
     public byte B_BUS() {
-        byte[] v = bits.get(12, 16).toByteArray();
-        return v.length == 1 ?
-            v[0]
-            : 0;
+        return bits.get(12, 16);
     }
 
     /**
      * The S-BUS is the register index of the result.
      */
     public byte S_BUS() {
-        byte[] v = bits.get(16, 20).toByteArray();
-        return v.length == 1 ?
-            v[0]
-            : 0;
+        return bits.get(16, 20);
     }
 
     /**
@@ -120,24 +95,15 @@ class Instruction {
     }
 
     public byte SH() {
-        byte[] v = bits.get(25, 27).toByteArray();
-        return v.length == 1 ?
-            v[0]
-            : 0;
+        return bits.get(25, 27);
     }
 
     public byte ALU() {
-        byte[] v = bits.get(27, 29).toByteArray();
-        return v.length == 1 ?
-            v[0]
-            : 0;
+        return bits.get(27, 29);
     }
 
     public byte COND() {
-        byte[] v = bits.get(29, 31).toByteArray();
-        return v.length == 1 ?
-            v[0]
-            : 0;
+        return bits.get(29, 31);
     }
 
     public boolean A_MUX() {
