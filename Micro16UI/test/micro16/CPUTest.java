@@ -101,4 +101,27 @@ public class CPUTest {
 
         assertEquals(r1, 3);
     }
+
+    @Test
+    public void testIfZ() {
+        /*
+        R1 <- 1
+        R0 <- R1 + (-1)
+        R0; if Z goto 4
+        R0 <- R0 + 1
+        R2 <- R2 + 1
+         */
+        int[] ifZTest = new int[]{
+                0x00150100,
+                0x08142500,
+                0x40000404,
+                0x08141400,
+                0x08161600
+        };
+
+        CPU cpu = new CPU(ifZTest);
+        cpu.stepUntilCompletion();
+        short r0 = cpu.getRegisters()[CPU.R0_IDX];
+        assertEquals(r0, 0);
+    }
 }

@@ -36,16 +36,16 @@ class CPU {
     private boolean zeroFlag;
     private Memory memory;
 
-    public CPU(int[] controlStore) {
-        this.instructionCounter = 0;
-        this.controlStore = controlStore;
-        this.registers = new short[REGISTER_COUNT];
+    public CPU(int[] program) {
+        instructionCounter = 0;
+        controlStore = program;
+        registers = new short[REGISTER_COUNT];
         registers[0] = 0;
         registers[1] = 1;
         registers[2] = -1;
         zeroFlag = false;
         negativeFlag = false;
-        this.memory = new Memory();
+        memory = new Memory();
     }
 
     /**

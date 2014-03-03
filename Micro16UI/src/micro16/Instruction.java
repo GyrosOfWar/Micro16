@@ -44,6 +44,10 @@ class Instruction {
         return bits;
     }
 
+    /**
+     * The ADDR part of the instruction determines, if COND != 0, where in the program
+     * to jump to.
+     */
     public byte ADDR() {
         byte[] v = bits.get(0, 8).toByteArray();
         return v.length == 1 ?
@@ -51,6 +55,9 @@ class Instruction {
             : 0;
     }
 
+    /**
+     * The A-BUS is the register index of the first operand.
+     */
     public byte A_BUS() {
         byte[] v = bits.get(8, 12).toByteArray();
         return v.length == 1 ?
@@ -58,6 +65,9 @@ class Instruction {
             : 0;
     }
 
+    /**
+     * The B-BUS is the register index of the second operand
+     */
     public byte B_BUS() {
         byte[] v = bits.get(12, 16).toByteArray();
         return v.length == 1 ?
@@ -65,6 +75,9 @@ class Instruction {
             : 0;
     }
 
+    /**
+     * The S-BUS is the register index of the result.
+     */
     public byte S_BUS() {
         byte[] v = bits.get(16, 20).toByteArray();
         return v.length == 1 ?
@@ -72,18 +85,32 @@ class Instruction {
             : 0;
     }
 
+    /**
+     * ENS (Enable S-BUS) is true if the result of the ALU/Shifter
+     * should be written to the registers. If it is false, it will be ignored
+     * (but the N/Z flags will still be set)
+     */
     public boolean ENS() {
         return bits.get(20);
     }
 
+    /**
+     * Memory select is true if any memory operation should happen, false otherwise.
+     */
     public boolean MS() {
         return bits.get(21);
     }
 
+    /**
+     * RD_WR is true for reading from memory, false for writing to memory.
+     */
     public boolean RD_WR() {
         return bits.get(22);
     }
 
+    /**
+     *
+     */
     public boolean MAR() {
         return bits.get(23);
     }
