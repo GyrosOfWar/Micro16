@@ -1,5 +1,6 @@
 package micro16;
 
+import java.time.Clock;
 import java.time.Instant;
 
 import static java.lang.System.out;
@@ -29,11 +30,20 @@ public class Main {
             0x08161600,
             0x08164600
         };
-        CPU c = new CPU(memoryWrite);
-        while (true) {
+
+        int[] memory2 = new int[] {
+                0x081e1100,
+                0x001d0e00,
+                0x021e0e00,
+                0x0080e000,
+                0x01200d00,
+                0x00200000
+        };
+        CPU c = new CPU(memory2);
+        Clock clock = Clock.systemUTC();
+        for(int n = 0; n < 10; n++) {
             int k = 0;
-            Instant t = Instant.now();
-            Instant end = t.plusSeconds(1);
+            Instant end = clock.instant().plusSeconds(1);
             while (end.isAfter(Instant.now())) {
                 c.reset();
                 while (c.getInstructionCounter() < c.getProgramLength()) {
@@ -41,7 +51,7 @@ public class Main {
                     k++;
                 }
             }
-            out.println("Executed " + k + " instructions/s");
+            out.println("Executed " + (k / 1.0e6) + " million instructions/s");
         }
     }
 }
